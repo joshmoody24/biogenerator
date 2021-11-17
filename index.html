@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Bio Generator</title>
+		<link rel="stylesheet" type="text/css" href="styles.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body>
+		<h1>Bio Generator</h1>
+		<div id="app">
+			<!--
+				features:
+				Ability to toggle. regenerate, and manually change any aspect of the bio
+				defaults: name, gender, location, degree, religious affiliation, religious intensity, desire
+				additional: occupation
+			-->
+			<div class="settings">
+				<h2>Options</h2>
+				<form @submit.prevent>
+					<div class="bio-element">
+						<!-- make a function that auto changes the pronouns based on gender -->
+						<label for="person-name-textbox">Name </label>
+						<input type="text" name="person-name-textbox" v-model="name.name" />
+						<label for="gender">Gender</label>
+						<select name="gender" v-model="name.gender">
+							<option>male</option>
+							<option>female</option>
+						</select>
+						</label>
+						<button @click="randomizeName">Random Name</button>
+					</div>
+					<div class="bio-element">
+						<label for="location"><input type="checkbox" id="location" name="location" v-model="locationEnabled" />Location</label>
+						<input type="text" name="location-textbox" v-model="currentLocation" />
+						<button @click="currentLocation = randomElement(bioData['locations'])">Random Location</button>
+					</div>
+					<div class="bio-element">
+						<label for="school"><input type="checkbox" id="school" name="school" v-model="schoolEnabled" />School</label>
+						<input type="text" name="school-textbox" v-model="school" />
+						<button @click="school = randomElement(bioData['schools'])">Random School</button>
+						<br>
+						<label for="degree-textbox">Major</label>
+						<input type="text" name="degree-textbox" v-model="degree" />
+						<button @click="degree = randomElement(bioData['degrees'])">Random Major</button>
+					</div>
+					<div class="bio-element">
+						<label for="occupation"><input type="checkbox" id="occupation" name="occupation" v-model="occupationEnabled" />Occupation</label>
+						<input type="text" name="occupation-textbox" v-model="occupation" />
+						<button @click="occupation = randomElement(bioData['occupations'])">Random Occupation</button>
+					</div>
+					<div class="bio-element">
+						<label for="religion"><input type="checkbox" id="religion" name="religion" v-model="religionEnabled" />Religious Background</label>
+						<textarea type="text" name="religion-textbox" v-model="religion"></textarea>
+						<button @click="religion = randomElement(bioData['religious-backgrounds']).description">Random Religion</button>
+					</div>
+					<div class="bio-element">
+						<label for="desire"><input type="checkbox" id="desire" name="desire" v-model="desireEnabled" />Reason for meeting with missionaries</label>
+						<textarea type="text" name="desire-textbox" v-model="desire"></textarea>
+						<button @click="desire = randomElementWithCriteria(bioData['desires'], 'lesson', 1, '=').description" class="restoration">Restoration</button>
+						<button @click="desire = randomElementWithCriteria(bioData['desires'], 'lesson', 2, '=').description" class="plan-of-salvation">Plan of Salvation</button>
+						<button @click="desire = randomElementWithCriteria(bioData['desires'], 'lesson', 3, '=').description" class="gospel-of-christ">Gospel of Christ</button>
+						<button @click="desire = randomElementWithCriteria(bioData['desires'], 'lesson', 'loc', '=').description" class="law-of-chastity">Law of Chastity</button>
+						<button @click="desire = randomElementWithCriteria(bioData['desires'], 'lesson', 'wow', '=').description" class="word-of-wisdom">Word of Wisdom</button>
+						<button @click="desire = randomElement(bioData['desires']).description">Any Lesson</button>
+					</div>
+				</form>
+			</div>
+			<div class="results">
+				<h2>Result</h2>
+				<div class="bio-output">
+					{{bio}}
+				</div>
+			</div>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+		<script src="./generator.js"></script>
+	</body>
+</html>
